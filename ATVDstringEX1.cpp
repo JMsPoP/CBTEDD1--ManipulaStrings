@@ -27,7 +27,7 @@ int main() {
 
     string result;
 
-    // exibi a palavra inteira na linha 5
+    // exibe a palavra inteira na linha 5
     gotoxy(posX, posY);
     cout << input;
     waitHalfSecond();
@@ -36,25 +36,17 @@ int main() {
         char currentChar = input[i];
         result += currentChar;
 
-		
-		
-		
         // move a letra para baixo até a linha 20 e espera
-        for (int j = posY + 1; j <= finalPosY; j++) {
-
-
-            
+        for (int j = posY + 1; j <= finalPosY; j++) {  
             gotoxy(posX + i, j - 1);
             cout << ' '; // apaga a letra na linha anterior
             gotoxy(posX + i, j); //vai pra posição
             cout << currentChar; //coloca o caractere
             waitHalfSecond();
-            
-            
         }
     }
 
-    // exibi a mensagem final na linha 20
+    // exibe a mensagem final na linha 20
     gotoxy(posX, finalPosY);
     cout << result;
 
