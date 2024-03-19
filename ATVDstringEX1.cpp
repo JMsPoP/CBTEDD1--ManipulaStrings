@@ -1,38 +1,62 @@
 #include <iostream>
-#include <string>
-#include <iomanip>
 #include <windows.h>
+#include <string>
 using namespace std;
 
+void gotoxy(short x, short y) {
+    COORD coord = {x, y};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void waitHalfSecond() {
+    Sleep(500); // variavel para espera meio segundo
+}
+
 int main() {
-    string texto;
-    cout << "Insira um texto: ";
-    getline(cin, texto);
+    setlocale(LC_ALL, "");
 
-    int larguraTela = 205;
-    int larguraTexto = texto.length();
-    int espacosEsquerda = (larguraTela - larguraTexto) / 2 + 5;
+    string input;
+    cout << "Digite uma mensagem: ";
+    getline(cin, input);
 
-    // Mostrar o texto na linha 5
-    for (int i = 0; i < 3; i++) {
-        cout << endl;
+    int screenWidth = 230; // Largura da tela
+    int inputWidth = input.length();
+    int posX = (screenWidth - inputWidth) / 2;
+    int posY = 5;  //posicao incial
+    int finalPosY = 20; //posicao final
+
+    string result;
+
+    // exibi a palavra inteira na linha 5
+    gotoxy(posX, posY);
+    cout << input;
+    waitHalfSecond();
+
+    for (int i = 0; i < inputWidth; i++) {
+        char currentChar = input[i];
+        result += currentChar;
+
+		
+		
+		
+        // move a letra para baixo até a linha 20 e espera
+        for (int j = posY + 1; j <= finalPosY; j++) {
+
+
+            
+            gotoxy(posX + i, j - 1);
+            cout << ' '; // apaga a letra na linha anterior
+            gotoxy(posX + i, j); //vai pra posição
+            cout << currentChar; //coloca o caractere
+            waitHalfSecond();
+            
+            
+        }
     }
-    cout << setw(espacosEsquerda + larguraTexto) << texto << endl;
 
-    // Mostrar o texto na linha 20, caractere por caractere
-    int delay = 100; // Atraso entre caracteres em milissegundos
-    int linhaAtual = 20;
-    int colunaAtual = espacosEsquerda;
-    for (int i = 0; i < larguraTexto; i++) {
-        COORD coord = { static_cast<SHORT>(colunaAtual), static_cast<SHORT>(linhaAtual) };
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-        cout << texto[i];
-        colunaAtual++;
-        FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE)); // Limpar o buffer de entrada
-        Sleep(delay);
-    }
-
-    cout << endl;
+    // exibi a mensagem final na linha 20
+    gotoxy(posX, finalPosY);
+    cout << result;
 
     return 0;
 }
